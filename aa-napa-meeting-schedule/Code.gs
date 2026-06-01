@@ -135,7 +135,12 @@ function createGoogleDocFromSheet() {
   var table = newBody.appendTable(rowsForTable);
   for (var r = 0; r < table.getNumRows(); r++) {
     for (var c = 0; c < table.getRow(r).getNumCells(); c++) {
-      table.getCell(r, c).editAsText().setFontSize(7);
+      var cell = table.getCell(r, c);
+      cell.editAsText().setFontSize(7);
+      cell.setPaddingTop(2);
+      cell.setPaddingBottom(2);
+      cell.setPaddingLeft(2);
+      cell.setPaddingRight(2);
     }
   }
 
