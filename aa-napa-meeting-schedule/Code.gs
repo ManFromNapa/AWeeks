@@ -148,7 +148,6 @@ function createGoogleDocFromSheet() {
   body.setPageWidth(11 * 72);
   body.setPageHeight(8.5 * 72);
 
-  newBody.appendParagraph('');
   var currentDate = new Date();
   var formattedDate = Utilities.formatDate(currentDate, "GMT-07:00", "MM/dd/yyyy");
   var revisionParagraph = newBody.appendParagraph('Revision - ' + formattedDate);
