@@ -144,6 +144,12 @@ function createGoogleDocFromSheet() {
     }
   }
 
+  // Remove the empty paragraph that Google Docs automatically adds after a table
+  var lastElement = newBody.getChild(newBody.getNumChildren() - 1);
+  if (lastElement.getType() === DocumentApp.ElementType.PARAGRAPH && lastElement.asText().getText() === '') {
+    newBody.removeChild(lastElement);
+  }
+
   var body = newDoc.getBody();
   body.setPageWidth(11 * 72);
   body.setPageHeight(8.5 * 72);
