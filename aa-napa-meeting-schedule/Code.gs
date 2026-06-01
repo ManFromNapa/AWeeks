@@ -132,11 +132,12 @@ function createGoogleDocFromSheet() {
   legendTitle.setFontSize(10);
   legendTitle.editAsText().setBold(true);
 
-  typeDescriptions.forEach(description => {
-    var para = newBody.appendParagraph(description);
-    para.setFontSize(8);
-    para.setBold(false);
-  });
+  var table = newBody.appendTable(rowsForTable);
+  for (var r = 0; r < table.getNumRows(); r++) {
+    for (var c = 0; c < table.getRow(r).getNumCells(); c++) {
+      table.getCell(r, c).editAsText().setFontSize(7);
+    }
+  }
 
   var body = newDoc.getBody();
   body.setPageWidth(11 * 72);
