@@ -93,22 +93,10 @@ function createGoogleDocFromSheet() {
         var line = lineStart + " - " + lineEnd;
         line = line.replace(/\s{2,}/g, ' ');
 
-        var paragraph = newBody.appendParagraph(line).setFontSize(8);
-        paragraph.editAsText().setBold(false);
-        paragraph.editAsText().setBold(0, lineStart.length, true);
-        paragraph.editAsText().setBold(0, 0, true);
-
-        var column3StartIndex = line.indexOf(lineData[2]);
-        var column3EndIndex = column3StartIndex + lineData[2].length;
-        if (column3StartIndex >= 0 && column3EndIndex < line.length) {
-          paragraph.editAsText().setBold(column3StartIndex, column3EndIndex, false);
-        }
-
-        var typesStartIndex = line.indexOf("Types: ");
-        var typesEndIndex = typesStartIndex + "Types: ".length + lineData[6].length;
-        if (typesStartIndex >= 0 && typesEndIndex > typesStartIndex && typesEndIndex <= line.length) {
-          paragraph.editAsText().setBold(typesStartIndex, typesEndIndex - 1, true);
-        }
+        // Optimized: single editAsText() call, bold only time and name
+        var text = newBody.appendParagraph(line).setFontSize(8).editAsText();
+        text.setBold(false);
+        text.setBold(0, lineStart.length, true);
       }
       newBody.appendParagraph('');
     }
