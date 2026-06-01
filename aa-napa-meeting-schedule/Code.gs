@@ -149,6 +149,7 @@ function createGoogleDocFromSheet() {
   body.setPageHeight(8.5 * 72);
 
   // Google Docs auto-adds an empty paragraph after a table — reuse it for the revision line
+  // and zero out its spacing to avoid a blank line gap
   var currentDate = new Date();
   var formattedDate = Utilities.formatDate(currentDate, "GMT-07:00", "MM/dd/yyyy");
   var lastElement = newBody.getChild(newBody.getNumChildren() - 1);
@@ -156,10 +157,14 @@ function createGoogleDocFromSheet() {
     var revisionParagraph = lastElement.asParagraph();
     revisionParagraph.setText('Revision - ' + formattedDate);
     revisionParagraph.setFontSize(8);
+    revisionParagraph.setSpacingBefore(0);
+    revisionParagraph.setSpacingAfter(0);
     revisionParagraph.editAsText().setBold(0, ('Revision - ' + formattedDate).length - 1, true);
   } else {
     var revisionParagraph = newBody.appendParagraph('Revision - ' + formattedDate);
     revisionParagraph.setFontSize(8);
+    revisionParagraph.setSpacingBefore(0);
+    revisionParagraph.setSpacingAfter(0);
     revisionParagraph.editAsText().setBold(0, ('Revision - ' + formattedDate).length - 1, true);
   }
 
