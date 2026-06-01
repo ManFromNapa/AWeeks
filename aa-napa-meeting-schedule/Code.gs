@@ -144,21 +144,24 @@ function createGoogleDocFromSheet() {
     }
   }
 
-  // Remove the empty paragraph that Google Docs automatically adds after a table
-  var lastElement = newBody.getChild(newBody.getNumChildren() - 1);
-  if (lastElement.getType() === DocumentApp.ElementType.PARAGRAPH && lastElement.asText().getText() === '') {
-    newBody.removeChild(lastElement);
-  }
-
   var body = newDoc.getBody();
   body.setPageWidth(11 * 72);
   body.setPageHeight(8.5 * 72);
 
+  // Google Docs auto-adds an empty paragraph after a table — reuse it for the revision line
   var currentDate = new Date();
   var formattedDate = Utilities.formatDate(currentDate, "GMT-07:00", "MM/dd/yyyy");
-  var revisionParagraph = newBody.appendParagraph('Revision - ' + formattedDate);
-  revisionParagraph.setFontSize(8);
-  revisionParagraph.editAsText().setBold(0, ('Revision - ' + formattedDate).length - 1, true);
+  var lastElement = newBody.getChild(newBody.getNumChildren() - 1);
+  if (lastElement.getType() === DocumentApp.ElementType.PARAGRAPH && lastElement.asText().getText() === '') {
+    var revisionParagraph = lastElement.asParagraph();
+    revisionParagraph.setText('Revision - ' + formattedDate);
+    revisionParagraph.setFontSize(8);
+    revisionParagraph.editAsText().setBold(0, ('Revision - ' + formattedDate).length - 1, true);
+  } else {
+    var revisionParagraph = newBody.appendParagraph('Revision - ' + formattedDate);
+    revisionParagraph.setFontSize(8);
+    revisionParagraph.editAsText().setBold(0, ('Revision - ' + formattedDate).length - 1, true);
+  }
 
   newDoc.saveAndClose();
 
